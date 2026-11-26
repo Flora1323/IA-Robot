@@ -30,15 +30,18 @@ class Robot:
     materiaux_portes: list = field(default_factory=list)   # liste vide par défaut
 
 
+"""True si la case est dans la grille ET n'est pas un obstacle."""
 class Grille:
     def __init__(self, nb_lignes: int, nb_colonnes: int, obstacles: set[Case]):
-        # TODO : stocker les trois attributs
-        pass
+        self.nb_lignes = nb_lignes
+        self.nb_colonnes = nb_colonnes
+        self.obstacles = obstacles
 
     def est_valide(self, case: Case) -> bool:
-        """True si la case est dans la grille ET n'est pas un obstacle."""
-        # TODO
-        pass
+        ligne, colonne = case
+        return (0 <= ligne < self.nb_lignes
+                and 0 <= colonne < self.nb_colonnes
+                and case not in self.obstacles)
 
 
 def distance_manhattan(a: Case, b: Case) -> int:

@@ -1,6 +1,7 @@
-from robots.environnement import Materiau, Robot, EtatMateriau
+from robots.environnement import Grille
 
-m1 = Materiau("M1", "Bois", 4, (1, 3))
-r1 = Robot("R1", 10, (1, 0), (5, 4))
-print(m1)
-print(r1)
+g = Grille(6, 6, {(2, 2), (3, 2), (3, 3)})
+print(g.est_valide((0, 0)))
+print(g.est_valide((2, 2)))
+print(g.est_valide((6, 0)))
+print(g.est_valide((-1, 3)))
