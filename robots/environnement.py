@@ -60,13 +60,21 @@ def deplacer(robot: Robot, destination: Case, grille: Grille) -> None:
 
 
 def charger(robot: Robot, materiau: Materiau) -> None:
-    """Le robot charge le matériau situé sur sa propre case.
-    Lève ActionImpossible si : matériau pas AU_STOCK, robot pas sur sa case,
-    ou charge + poids > capacité.
-    Effets : charge, materiaux_portes, etat du matériau.
-    """
-    # TODO
-    pass
+
+    if materiau.etat != EtatMateriau.AU_STOCK:
+        raise ActionImpossible(f"Le matériau {materiau.id} n'est pas au stock")
+
+    if robot.position != materiau.position:
+        raise ActionImpossible("Le robot n'est pas sur la case du matériau")
+
+    if robot.charge + materiau.poids > robot.capacite:
+        raise ActionImpossible(
+            f"Charge dépassée : {robot.charge} + {materiau.poids} > {robot.capacite}"
+        )
+    # Les 3 effets
+    robot.charge += materiau.poids # 1. augmenter la charge du robot du poids du matériau
+    robot.materiaux_portes.append(materiau) # 2. ajouter le matériau à la liste robot.materiaux_portes
+    materiau.etat = EtatMateriau.TRANSPORTE # 3. passer l'état du matériau à TRANSPORTE
 
 
 def decharger(robot: Robot) -> None:
