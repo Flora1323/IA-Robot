@@ -45,16 +45,18 @@ class Grille:
 
 
 def distance_manhattan(a: Case, b: Case) -> int:
-    # TODO
-    pass
-
+    ligne_a, colonne_a = a #récupère les coordonnées
+    ligne_b, colonne_b = b
+    
+    return abs(ligne_a - ligne_b) + abs(colonne_a - colonne_b) #on utilise les valeurs absolues
+    #nombre de cases à parcourir horizontalement + le nombre de cases à parcourir verticalement.
 
 def deplacer(robot: Robot, destination: Case, grille: Grille) -> None:
-    """Déplace le robot d'une case orthogonale.
-    Lève ActionImpossible si : destination invalide, ou distance != 1.
-    """
-    # TODO
-    pass
+    if not grille.est_valide(destination):
+        raise ActionImpossible(f"la case {destination} est hors grille ou est un obstacle")
+    if distance_manhattan(robot.position, destination) != 1: #avance plus de 1
+        raise ActionImpossible (f"la distance {distance_manhattan(robot.position, destination)} n'est pas une distance admissible")
+    robot.position = destination
 
 
 def charger(robot: Robot, materiau: Materiau) -> None:
