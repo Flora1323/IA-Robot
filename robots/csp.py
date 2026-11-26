@@ -7,7 +7,7 @@ C : pour chaque robot, somme des poids affectés <= capacité
 
 def charge_robot(robot, assignment, poids):
     """Poids total déjà affecté à `robot` dans l'affectation partielle."""
-    charge_total = 0
+    charge_totale = 0
 
     for materiau, robot_assigne in assignment.items():
         if robot_assigne == robot:
