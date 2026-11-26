@@ -1,4 +1,4 @@
-from robots.environnement import Materiau, Robot, EtatMateriau, Grille, deplacer, charger
+from robots.environnement import Materiau, Robot, EtatMateriau, Grille, deplacer, charger, decharger
 from robots.exceptions import ActionImpossible
 
 #---- TEST 1 ----#
@@ -33,7 +33,7 @@ for dest in [(2, 2), (6, 1), (1, 3)]:
         
 #---- TEST 4 ----#
 
-m1 = Materiau("M1", "Bois", 4, (1, 3))
+"""m1 = Materiau("M1", "Bois", 4, (1, 3))
 
 r1 = Robot("R1", 10, (1, 3), (5, 4))
 charger(r1, m1)
@@ -59,3 +59,59 @@ try:
     charger(r1b, m1b)
 except ActionImpossible as e:
     print(e)
+"""
+
+#---- TEST 5 ----#
+
+# Création des matériaux
+m1 = Materiau("M1", "Bois", 4, (1, 3))
+m2 = Materiau("M2", "Métal", 3, (1, 3))
+
+# Création du robot
+r1 = Robot("R1", 10, (5, 4), (5, 4))
+
+# Le robot charge les deux matériaux
+# On le place directement sur la case des matériaux
+r1.position = (1, 3)
+
+charger(r1, m1)
+charger(r1, m2)
+
+print("Avant déchargement :")
+print(r1.charge)             # 7
+print(r1.materiaux_portes)   # M1 et M2
+
+# Le robot se déplace jusqu'à son dépôt
+r1.position = r1.depot
+
+# Déchargement
+decharger(r1)
+
+print("Après déchargement :")
+print(r1.charge)             # 0
+print(r1.materiaux_portes)   # []
+print(m1.etat)               # EtatMateriau.LIVRE
+print(m2.etat)               # EtatMateriau.LIVRE
+print(m1.position)           # (5, 4)
+print(m2.position)           # (5, 4)
+
+
+# TEST : robot pas sur son dépôt
+r2 = Robot("R2", 10, (1, 1), (5, 4))
+
+try:
+    decharger(r2)
+except ActionImpossible as e:
+    print("Erreur attendue :", e)
+
+
+# TEST : rien à décharger
+r3 = Robot("R3", 10, (5, 4), (5, 4))
+
+try:
+    decharger(r3)
+except ActionImpossible as e:
+    print("Erreur attendue :", e)
+
+
+

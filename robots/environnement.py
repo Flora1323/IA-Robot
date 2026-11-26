@@ -60,7 +60,6 @@ def deplacer(robot: Robot, destination: Case, grille: Grille) -> None:
 
 
 def charger(robot: Robot, materiau: Materiau) -> None:
-
     if materiau.etat != EtatMateriau.AU_STOCK:
         raise ActionImpossible(f"Le matériau {materiau.id} n'est pas au stock")
 
@@ -78,12 +77,18 @@ def charger(robot: Robot, materiau: Materiau) -> None:
 
 
 def decharger(robot: Robot) -> None:
-    """Le robot dépose tout ce qu'il porte, sur son dépôt.
-    Lève ActionImpossible si : robot pas sur son dépôt, ou rien à décharger.
-    Effets : matériaux LIVRE (position = dépôt), charge = 0, liste vidée.
-    """
-    # TODO
-    pass
+    if robot.position != robot.depot:
+        raise ActionImpossible("Le robot n'est pas sur son dépôt")
+    
+    if not robot.materiaux_portes:
+        raise ActionImpossible("Le robot ne porte aucun matériau")
+    
+    for materiau in robot.materiaux_portes:
+        materiau.etat = EtatMateriau.LIVRE
+        materiau.position = robot.depot
+    
+    robot.charge = 0 #on remet le poids à 0
+    robot.materiaux_portes.clear() #vide la liste des matériaux
 
 
 def afficher(grille: Grille, robots: list[Robot], materiaux: list[Materiau]) -> None:
