@@ -1,4 +1,4 @@
-from robots.environnement import Materiau, Robot, EtatMateriau, Grille, deplacer, charger, decharger
+from robots.environnement import Materiau, Robot, EtatMateriau, Grille, deplacer, charger, decharger, afficher
 from robots.exceptions import ActionImpossible
 
 #---- TEST 1 ----#
@@ -62,7 +62,7 @@ except ActionImpossible as e:
 """
 
 #---- TEST 5 ----#
-
+"""
 # Création des matériaux
 m1 = Materiau("M1", "Bois", 4, (1, 3))
 m2 = Materiau("M2", "Métal", 3, (1, 3))
@@ -112,6 +112,19 @@ try:
     decharger(r3)
 except ActionImpossible as e:
     print("Erreur attendue :", e)
+"""
 
+#---- TEST 6 ----#
+
+g = Grille(6, 6, {(2, 2), (3, 2), (3, 3)})
+robots = [Robot("R1", 10, (1, 0), (5, 4)), Robot("R2", 8, (4, 0), (5, 5))]
+materiaux = [
+    Materiau("M1", "Bois", 4, (1, 3)),
+    Materiau("M2", "Acier", 6, (1, 5)),
+    Materiau("M3", "Plastique", 3, (4, 1)),
+    Materiau("M4", "Aluminium", 5, (4, 4)),
+]
+afficher(g, robots, materiaux)
+# afficher(g, robots[::-1], materiaux[::-1]) - l'inverse fonctionne aussi
 
 

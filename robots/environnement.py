@@ -91,7 +91,36 @@ def decharger(robot: Robot) -> None:
     robot.materiaux_portes.clear() #vide la liste des matériaux
 
 
-def afficher(grille: Grille, robots: list[Robot], materiaux: list[Materiau]) -> None:
-    """Affichage texte : # obstacle, . case libre, R1/R2, M1..M4, D1/D2."""
-    # TODO
-    pass
+def afficher(grille, robots, materiaux) -> None:
+    tableau = [["." for colonne in range(grille.nb_colonnes)]
+               for ligne in range(grille.nb_lignes)]
+
+    # 1. obstacles : "#" 
+    
+    for case in grille.obstacles:
+        ligne, colonne = case
+        tableau[ligne][colonne] = "#"
+    
+    # 2. dépôts : pour chaque robot, à robot.depot, écrire "D" + son numéro
+    
+    for robot in robots:
+        ligne, colonne = robot.depot
+        tableau[ligne][colonne] = "D" + robot.id[1:]     # "R1"[1:] donne "1"
+
+    # 3. matériaux au stock : à materiau.position, écrire materiau.id
+    
+    for materiau in materiaux:
+        if materiau.etat == EtatMateriau.AU_STOCK:
+            ligne, colonne = materiau.position
+            tableau[ligne][colonne] = materiau.id
+    
+    # 4. robots : à robot.position, écrire robot.id
+    
+    for robot in robots:
+        ligne, colonne = robot.position
+        tableau[ligne][colonne] = robot.id
+
+    # Affichage
+
+    for ligne in tableau:
+        print(" ".join(case.ljust(2) for case in ligne))
